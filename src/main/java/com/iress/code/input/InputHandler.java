@@ -1,70 +1,88 @@
 package com.iress.code.input;
 
-import com.iress.code.dtos.InputDto;
+import com.iress.code.algorithm.RobotOperation;
 import com.iress.code.model.Direction;
 import com.iress.code.model.OperationalCommand;
+import com.iress.code.model.Robot;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static com.iress.code.utils.ToyRobotConstants.*;
 
 @Slf4j
-// TODO: add log
 public class InputHandler {
-    int[] position;
-    Direction direction;
-    List<OperationalCommand> operateCommands = new ArrayList<>();
-    public InputDto handle() {
-        Path path = Paths.get("input.txt");
+    Robot robot;
+
+    private boolean isInOperationalCommand(String value) {
+        return Arrays.stream(OperationalCommand.values()).anyMatch(e -> e.name().equals(value));
+    }
+
+    private boolean isInDirection(String value) {
+        return Arrays.stream(Direction.values()).anyMatch(e -> e.name().equals(value));
+    }
+
+    public void handle() {
+        Path path = Paths.get(INPUT_FILE_NAME);
+        RobotOperation robotOperation = new RobotOperation();
         try (Stream<String> stream = Files.lines(path)) {
             stream.forEach(s -> {
-                // TODO: add more error handler
-                // TODO: add more regex constant
-                // TODO: check first s == "PLACE"
+                // TODO: for if-else separate functions
+                // TODO： consider - while, break - to exit
+                // TODO: edit/organize error messages and log - keep consistent
                 if (s.startsWith(PLACE_OPERATION)) {
-                    String[] place = s.split(" ")[1].split(",");
-                    position = new int[place.length - 1];
-                    //  TODO: add check position
+                    // TODO: add split error: throw INVALID INITIAL PLACE INFORMATION
+                    String[] place = s.split(SPACE_REGX)[1].split(COMMA_REGX);
+                    int[] position = new int[place.length - 1];
                     for (int i = 0; i < place.length - 1; i++) {
-                        position[i] = Integer.parseInt(place[i]);
+                        String possibleNumber = place[i];
+                        // consider regex: whether p
+                        boolean isNumber = Pattern.matches("[0-5]+", possibleNumber);
+                        if(isNumber) {
+                            position[i] = Integer.parseInt(possibleNumber);
+                        }
+                        else {
+                            log.error("INVALID position: " + place[i]);
+                            throw new RuntimeException("INVALID position: " + place[i]);
+                        }
                     }
                     if (isInDirection(place[2])) {
-                        direction = Direction.valueOf(place[2]);
+                        Direction direction = Direction.valueOf(place[2]);
+                        robot = robotOperation.initialRobot(position, direction);
                     } else {
-                        System.out.println("INVALID direction command: " + place[2]);
+                        log.error("INVALID direction command: " + place[2]);
+                        throw new RuntimeException("INVALID direction command: " + place[2]);
                     }
-
-                } else if (s.startsWith(REPORT_OPERATION)) {
-                    // do nothing
                 } else {
-                    if (isInOperationalCommand(s)) {
-                        operateCommands.add(OperationalCommand.valueOf(s));
+                    if (checkIfRobotIsInitialized()) {
+                        if (s.startsWith(REPORT_OPERATION)) {
+                            robotOperation.outputRobot(robot);
+                        } else {
+                            if (isInOperationalCommand(s)) {
+                                robotOperation.operateRobot(robot, OperationalCommand.valueOf(s));
+                            } else {
+                                log.error("INVALID operational command: " + s);
+                                throw new RuntimeException("INVALID operational command: " + s);
+                            }
+                        }
                     } else {
-                        System.out.println("INVALID operational command: " + s);
+                        log.error("NO ROBOT");
+                        throw new RuntimeException("NO ROBOT");
                     }
                 }
             });
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        return InputDto.builder()
-                .direction(direction)
-                .position(position)
-                .operateCommands(operateCommands)
-                .build();
     }
-    public static boolean isInOperationalCommand(String value) {
-        return Arrays.stream(OperationalCommand.values()).anyMatch(e -> e.name().equals(value));
-    }
-    public static boolean isInDirection(String value) {
-        return Arrays.stream(Direction.values()).anyMatch(e -> e.name().equals(value));
+
+    private boolean checkIfRobotIsInitialized() {
+        return robot != null;
     }
 }

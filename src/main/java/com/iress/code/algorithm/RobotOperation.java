@@ -1,30 +1,29 @@
 package com.iress.code.algorithm;
 
-import com.iress.code.dtos.InputDto;
+import com.iress.code.model.Direction;
 import com.iress.code.model.OperationalCommand;
 import com.iress.code.model.Robot;
+import com.iress.code.output.OutputHandler;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @Slf4j
 // TODO: add log
 public class RobotOperation {
-    public Robot run(InputDto inputDto) {
-        Robot robot = new Robot(inputDto.getPosition(), inputDto.getDirection());
-        operateRobot(robot, inputDto.getOperateCommands());
-        return robot;
+    public Robot initialRobot(int[] position, Direction direction) {
+        return new Robot(position, direction);
     }
 
-    private void operateRobot(Robot robot, List<OperationalCommand> operateCommands) {
-        operateCommands.forEach(operateCommand -> {
-            if (operateCommand.equals(OperationalCommand.MOVE)) {
-                robot.move();
-            } else if (operateCommand.equals(OperationalCommand.LEFT)) {
-                robot.leftRotate();
-            } else if (operateCommand.equals(OperationalCommand.RIGHT)) {
-                robot.rightRotate();
-            }
-        });
+    public void operateRobot(Robot robot, OperationalCommand operateCommand) {
+        if (operateCommand.equals(OperationalCommand.MOVE)) {
+            robot.move();
+        } else if (operateCommand.equals(OperationalCommand.LEFT)) {
+            robot.leftRotate();
+        } else if (operateCommand.equals(OperationalCommand.RIGHT)) {
+            robot.rightRotate();
+        }
+    }
+
+    public void outputRobot(Robot robot) {
+        new OutputHandler().handle(robot);
     }
 }

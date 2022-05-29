@@ -15,4 +15,14 @@ public class ToyRobotConstants {
     public static final String EAST_NAME = "EAST";
     public static final String SOUTH_NAME = "SOUTH";
     public static final String WEST_NAME = "WEST";
+
+    //file names
+    public static final String INPUT_FILE_NAME = "input.txt";
+
+    //regex names
+    public static final String SPACE_REGX = "\\s+";
+    public static final String COMMA_REGX = ",";
+
+    //output description
+    public static final String OUTPUT_DESCRIPTION = "Output: ";
 }
