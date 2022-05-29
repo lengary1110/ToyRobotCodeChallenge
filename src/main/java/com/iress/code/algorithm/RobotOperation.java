@@ -5,7 +5,7 @@ import com.iress.code.model.OperationalCommand;
 import com.iress.code.model.Robot;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 // TODO: add log
@@ -16,7 +16,7 @@ public class RobotOperation {
         return robot;
     }
 
-    private void operateRobot(Robot robot, ArrayList<OperationalCommand> operateCommands) {
+    private void operateRobot(Robot robot, List<OperationalCommand> operateCommands) {
         operateCommands.forEach(operateCommand -> {
             if (operateCommand.equals(OperationalCommand.MOVE)) {
                 robot.move();

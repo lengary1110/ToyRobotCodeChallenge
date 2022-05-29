@@ -5,12 +5,12 @@ import com.iress.code.model.OperationalCommand;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
 public class InputDto {
     private int[] position;
     private Direction direction;
-    private ArrayList<OperationalCommand> operateCommands;
+    private List<OperationalCommand> operateCommands;
 }

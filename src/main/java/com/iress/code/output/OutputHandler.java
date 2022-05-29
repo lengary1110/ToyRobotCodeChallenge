@@ -1,21 +1,18 @@
 package com.iress.code.output;
 
-import com.iress.code.dtos.OutputDto;
 import com.iress.code.model.Robot;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-
 @Slf4j
-
 public class OutputHandler {
+    StringBuilder outputStr = new StringBuilder();
     public void handle(Robot robot) {
-        OutputDto.builder()
-                .description("Output: ")
-                .direction(robot.getDirection())
-                .position(robot.getPosition())
-                .build();
-        System.out.println(Arrays.toString(robot.getPosition()));
-        System.out.println(robot.getDirection().getDirectionName());
+        outputStr.append("Output: ")
+                .append(robot.getPosition()[0])
+                .append(",")
+                .append(robot.getPosition()[1])
+                .append(",")
+                .append(robot.getDirection().getDirectionName());
+        System.out.println(outputStr);
     }
 }

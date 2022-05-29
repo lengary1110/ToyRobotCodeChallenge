@@ -9,7 +9,7 @@ public class Robot {
     private final int[] position;
     private Direction direction;
 
-    // TODO: add error handler: check initial position
+    // TODO: add error handler: check initial position and direction
     // TODO: try better lambda writing ways
     public void move() {
         switch (direction) {
@@ -41,6 +41,7 @@ public class Robot {
     }
 
     private boolean checkPositionHazard(int[] position) {
+        // TODO: add hazard error message
         return position[0] < 0 || (position[0] > 5 || position[1] < 0 || position[1] > 5);
     }
 
