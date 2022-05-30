@@ -27,6 +27,10 @@ public class InputHandler {
         }
     }
 
+    private boolean checkIfRobotIsInitialized() {
+        return robot != null;
+    }
+
     private void playWithRobot(String s, RobotOperation robotOperation) {
         if (isValidLine(s, REPORT_REGEX_COMMAND)) robotOperation.outputRobot(robot);
         else if (isValidLine(s, OPERATIONAL_REGEX_COMMAND))
@@ -34,16 +38,11 @@ public class InputHandler {
         else errorHandler(AFTER_PLACE_SKIP_MSG, s);
     }
 
-    private boolean checkIfRobotIsInitialized() {
-        return robot != null;
-    }
-
     private void initialRobot(String s, RobotOperation robotOperation) {
         if (isValidLine(s, PLACE_REGEX_COMMAND)) {
             String[] placeInfo = s.split(SPACE_REGX)[1].split(COMMA_REGX);
             int x = Integer.parseInt(placeInfo[0]);
             int y = Integer.parseInt(placeInfo[1]);
-            int[] position = new int[placeInfo.length - 1];
             Direction direction = Direction.valueOf(placeInfo[2]);
             robot = robotOperation.initialRobot(x, y, direction);
         } else {

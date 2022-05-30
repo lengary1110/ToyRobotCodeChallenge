@@ -1,5 +1,6 @@
 package com.iress.code.model;
 
+import com.iress.code.exception.ToyRobotException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,12 @@ public class Robot {
     private int x;
     private int y;
     private Direction direction;
+    // maxX, maxY
+    public static final int minX = 0;
+    public static final int minY = 0;
+    public static final int maxX = 5;
+    public static final int maxY = 5;
+
     // TODO: try better writing ways
     public void move() {
         switch (direction) {
@@ -19,6 +26,8 @@ public class Robot {
                 if (checkPositionHazard(x, y)) {
                     y--;
                     log.warn("Hazard: return to " + x + ", " + y);
+                    // TODO: add TRException
+                    throw new RuntimeException("Hazard: return to " + x + ", " + y);
                 }
                 break;
             case SOUTH:
@@ -44,10 +53,11 @@ public class Robot {
                 break;
         }
     }
-    // TODO: extract
+
     private boolean checkPositionHazard(int x, int y) {
-        return x < 0 || (x > 5 || y < 0 || y > 5);
+        return x < minX || (x > maxX || y < minY || y > maxY);
     }
+
     public void leftRotate() {
         direction = direction.turn(Turn.LEFT);
     }
