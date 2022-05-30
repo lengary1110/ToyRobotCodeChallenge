@@ -8,7 +8,7 @@ import static com.iress.code.utils.ToyRobotConstants.REPORT_OPERATION;
 
 @Getter
 @AllArgsConstructor
-public enum StageCommand {
+public enum StageCmd {
     PLACE(PLACE_OPERATION),
     REPORT(REPORT_OPERATION);
     private final String operationName;

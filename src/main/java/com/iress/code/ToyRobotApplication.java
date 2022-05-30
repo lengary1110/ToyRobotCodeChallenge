@@ -4,11 +4,13 @@ import com.iress.code.input.InputHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
+
 @SpringBootApplication
 public class ToyRobotApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         SpringApplication.run(ToyRobotApplication.class, args);
-        InputHandler inputHandler =  new InputHandler();
+        InputHandler inputHandler = new InputHandler();
         inputHandler.handle();
     }
 }

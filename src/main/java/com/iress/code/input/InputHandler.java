@@ -2,87 +2,67 @@ package com.iress.code.input;
 
 import com.iress.code.algorithm.RobotOperation;
 import com.iress.code.model.Direction;
-import com.iress.code.model.OperationalCommand;
+import com.iress.code.model.OperationalCmd;
 import com.iress.code.model.Robot;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import static com.iress.code.utils.ToyRobotConstants.*;
 
 @Slf4j
 public class InputHandler {
-    Robot robot;
+    private static final String PLACE_REGEX_COMMAND = "^PLACE \\d{1,},\\d{1,},(NORTH|SOUTH|EAST|WEST$)";
+    private static final String OPERATIONAL_REGEX_COMMAND = "^(MOVE|LEFT|RIGHT)$";
+    private static final String REPORT_REGEX_COMMAND = "^REPORT$";
+    private static final String NO_PLACE_SKIP_MSG = "Skip commandline: {} because the game not started until a PLACE found";
+    private static final String AFTER_PLACE_SKIP_MSG = "Skip commandline: {} it is not an valid operational or report commandline";
+    private Robot robot;
 
-    private boolean isInOperationalCommand(String value) {
-        return Arrays.stream(OperationalCommand.values()).anyMatch(e -> e.name().equals(value));
-    }
-
-    private boolean isInDirection(String value) {
-        return Arrays.stream(Direction.values()).anyMatch(e -> e.name().equals(value));
-    }
-
-    public void handle() {
-        Path path = Paths.get(INPUT_FILE_NAME);
+    public void handle() throws IOException {
+        InputData inputData = new FileInputData
+                (new File("./src/main/resources/" + INPUT_FILE_NAME));
         RobotOperation robotOperation = new RobotOperation();
-        try (Stream<String> stream = Files.lines(path)) {
-            stream.forEach(s -> {
-                // TODO: for if-else separate functions
-                // TODO： consider - while, break - to exit
-                // TODO: edit/organize error messages and log - keep consistent
-                if (s.startsWith(PLACE_OPERATION)) {
-                    // TODO: add split error: throw INVALID INITIAL PLACE INFORMATION
-                    String[] place = s.split(SPACE_REGX)[1].split(COMMA_REGX);
-                    int[] position = new int[place.length - 1];
-                    for (int i = 0; i < place.length - 1; i++) {
-                        String possibleNumber = place[i];
-                        // consider regex: whether p
-                        boolean isNumber = Pattern.matches("[0-5]+", possibleNumber);
-                        if(isNumber) {
-                            position[i] = Integer.parseInt(possibleNumber);
-                        }
-                        else {
-                            log.error("INVALID position: " + place[i]);
-                            throw new RuntimeException("INVALID position: " + place[i]);
-                        }
-                    }
-                    if (isInDirection(place[2])) {
-                        Direction direction = Direction.valueOf(place[2]);
-                        robot = robotOperation.initialRobot(position, direction);
-                    } else {
-                        log.error("INVALID direction command: " + place[2]);
-                        throw new RuntimeException("INVALID direction command: " + place[2]);
-                    }
-                } else {
-                    if (checkIfRobotIsInitialized()) {
-                        if (s.startsWith(REPORT_OPERATION)) {
-                            robotOperation.outputRobot(robot);
-                        } else {
-                            if (isInOperationalCommand(s)) {
-                                robotOperation.operateRobot(robot, OperationalCommand.valueOf(s));
-                            } else {
-                                log.error("INVALID operational command: " + s);
-                                throw new RuntimeException("INVALID operational command: " + s);
-                            }
-                        }
-                    } else {
-                        log.error("NO ROBOT");
-                        throw new RuntimeException("NO ROBOT");
-                    }
-                }
-            });
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        while (inputData.hasNextLine()) {
+            String s = inputData.nextLine();
+            if (checkIfRobotIsInitialized()) playWithRobot(s, robotOperation);
+            else initialRobot(s, robotOperation);
         }
+    }
+
+    private void playWithRobot(String s, RobotOperation robotOperation) {
+        if (isValidLine(s, REPORT_REGEX_COMMAND)) robotOperation.outputRobot(robot);
+        else if (isValidLine(s, OPERATIONAL_REGEX_COMMAND))
+            robotOperation.operateRobot(robot, OperationalCmd.valueOf(s));
+        else errorHandler(AFTER_PLACE_SKIP_MSG, s);
     }
 
     private boolean checkIfRobotIsInitialized() {
         return robot != null;
+    }
+
+    private void initialRobot(String s, RobotOperation robotOperation) {
+        if (isValidLine(s, PLACE_REGEX_COMMAND)) {
+            String[] placeInfo = s.split(SPACE_REGX)[1].split(COMMA_REGX);
+            int[] position = new int[placeInfo.length - 1];
+            for (int i = 0; i < placeInfo.length - 1; i++) {
+                String possibleNumber = placeInfo[i];
+                position[i] = Integer.parseInt(possibleNumber);
+            }
+            Direction direction = Direction.valueOf(placeInfo[2]);
+            robot = robotOperation.initialRobot(position, direction);
+        } else {
+            errorHandler(NO_PLACE_SKIP_MSG, s);
+        }
+    }
+
+    private boolean isValidLine(String line, String REGEX_COMMAND) {
+        return Pattern.compile(REGEX_COMMAND).matcher(line).find();
+    }
+
+    private void errorHandler(String errorMessage, String s) {
+        log.error(errorMessage, s);
     }
 }

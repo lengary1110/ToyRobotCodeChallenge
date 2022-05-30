@@ -17,6 +17,5 @@ public class OutputHandler {
                 .append(COMMA_REGX)
                 .append(robot.getDirection().getDirectionName());
         System.out.println(outputStr);
-        log.info(outputStr.toString());
     }
 }

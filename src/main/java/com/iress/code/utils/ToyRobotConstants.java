@@ -25,4 +25,8 @@ public class ToyRobotConstants {
 
     //output description
     public static final String OUTPUT_DESCRIPTION = "Output: ";
+
+    //errorMes
+    private static final String SKIP_MSG =
+            "Skip command %s because the game not started until a PLACE cmd found";
 }

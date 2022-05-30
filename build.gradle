@@ -24,8 +24,10 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+

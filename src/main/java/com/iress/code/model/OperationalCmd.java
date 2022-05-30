@@ -7,7 +7,7 @@ import static com.iress.code.utils.ToyRobotConstants.*;
 
 @Getter
 @AllArgsConstructor
-public enum OperationalCommand {
+public enum OperationalCmd {
     MOVE(MOVE_OPERATION),
     LEFT(LEFT_OPERATION),
     RIGHT(RIGHT_OPERATION);
