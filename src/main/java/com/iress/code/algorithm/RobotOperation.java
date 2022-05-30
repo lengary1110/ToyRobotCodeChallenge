@@ -4,12 +4,10 @@ import com.iress.code.model.Direction;
 import com.iress.code.model.OperationalCmd;
 import com.iress.code.model.Robot;
 import com.iress.code.output.OutputHandler;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class RobotOperation {
-    public Robot initialRobot(int[] position, Direction direction) {
-        return new Robot(position, direction);
+    public Robot initialRobot(int x, int y, Direction direction) {
+        return new Robot(x, y, direction);
     }
 
     public void operateRobot(Robot robot, OperationalCmd operateCommand) {

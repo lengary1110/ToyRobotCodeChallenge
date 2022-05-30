@@ -14,12 +14,7 @@ import static com.iress.code.utils.ToyRobotConstants.*;
 
 @Slf4j
 public class InputHandler {
-    private static final String PLACE_REGEX_COMMAND = "^PLACE \\d{1,},\\d{1,},(NORTH|SOUTH|EAST|WEST$)";
-    private static final String OPERATIONAL_REGEX_COMMAND = "^(MOVE|LEFT|RIGHT)$";
-    private static final String REPORT_REGEX_COMMAND = "^REPORT$";
-    private static final String NO_PLACE_SKIP_MSG = "Skip commandline: {} because the game not started until a PLACE found";
-    private static final String AFTER_PLACE_SKIP_MSG = "Skip commandline: {} it is not an valid operational or report commandline";
-    private Robot robot;
+   private Robot robot;
 
     public void handle() throws IOException {
         InputData inputData = new FileInputData
@@ -46,13 +41,11 @@ public class InputHandler {
     private void initialRobot(String s, RobotOperation robotOperation) {
         if (isValidLine(s, PLACE_REGEX_COMMAND)) {
             String[] placeInfo = s.split(SPACE_REGX)[1].split(COMMA_REGX);
+            int x = Integer.parseInt(placeInfo[0]);
+            int y = Integer.parseInt(placeInfo[1]);
             int[] position = new int[placeInfo.length - 1];
-            for (int i = 0; i < placeInfo.length - 1; i++) {
-                String possibleNumber = placeInfo[i];
-                position[i] = Integer.parseInt(possibleNumber);
-            }
             Direction direction = Direction.valueOf(placeInfo[2]);
-            robot = robotOperation.initialRobot(position, direction);
+            robot = robotOperation.initialRobot(x, y, direction);
         } else {
             errorHandler(NO_PLACE_SKIP_MSG, s);
         }
