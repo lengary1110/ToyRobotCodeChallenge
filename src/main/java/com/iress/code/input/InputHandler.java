@@ -6,29 +6,26 @@ import com.iress.code.model.OperationalCmd;
 import com.iress.code.model.Robot;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 import static com.iress.code.utils.ToyRobotConstants.*;
 
 @Slf4j
 public class InputHandler {
-   private Robot robot;
+    private Robot robot;
 
-    public void handle() throws IOException {
-        InputData inputData = new FileInputData
-                (new File("./src/main/resources/" + INPUT_FILE_NAME));
+    public Robot playToyRobot(InputData inputData) {
         RobotOperation robotOperation = new RobotOperation();
         while (inputData.hasNextLine()) {
             String s = inputData.nextLine();
-            if (checkIfRobotIsInitialized()) playWithRobot(s, robotOperation);
+            if (checkIfRobotFinallyInitialized(s)) playWithRobot(s, robotOperation);
             else initialRobot(s, robotOperation);
         }
+        return robot;
     }
 
-    private boolean checkIfRobotIsInitialized() {
-        return robot != null;
+    private boolean checkIfRobotFinallyInitialized(String s) {
+        return robot != null && !isValidLine(s, PLACE_REGEX_COMMAND);
     }
 
     private void playWithRobot(String s, RobotOperation robotOperation) {
