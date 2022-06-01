@@ -1,23 +1,23 @@
 package com.iress.code.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
-@Data
+@Getter
 @AllArgsConstructor
 @Slf4j
 public class Robot {
-    private int x;
-    private int y;
-    private Direction direction;
     // maxX, maxY
     public static final int minX = 0;
     public static final int minY = 0;
     public static final int maxX = 5;
     public static final int maxY = 5;
+    private int x;
+    private int y;
+    private Direction direction;
 
-    // TODO: we might need to check the initial robot boundary before move or rotate
     public void move() {
         switch (direction) {
             case NORTH:
@@ -43,7 +43,7 @@ public class Robot {
                 break;
             case WEST:
                 x--;
-                if (checkPositionHazard(x ,y)) {
+                if (checkPositionHazard(x, y)) {
                     x++;
                     warn(x, y);
                 }
@@ -51,9 +51,8 @@ public class Robot {
         }
     }
 
-    private void warn (int x, int y) {
+    private void warn(int x, int y) {
         log.warn("Hazard: return to " + x + ", " + y);
-//        throw new RuntimeException("Hazard: return to " + x + ", " + y);
     }
 
     private boolean checkPositionHazard(int x, int y) {
@@ -61,19 +60,19 @@ public class Robot {
     }
 
     public void leftRotate() {
-        if (!checkPositionHazard(x ,y)){
+        if (!checkPositionHazard(x, y)) {
             direction = direction.turn(Turn.LEFT);
         }
     }
 
     public void rightRotate() {
-        if (!checkPositionHazard(x ,y)){
+        if (!checkPositionHazard(x, y)) {
             direction = direction.turn(Turn.RIGHT);
         }
     }
 
     public String checkStatus() {
-        return x + ","+ y + "," + direction;
+        return x + "," + y + "," + direction;
     }
 
 }

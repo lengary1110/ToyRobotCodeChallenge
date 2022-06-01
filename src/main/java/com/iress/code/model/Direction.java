@@ -1,14 +1,10 @@
 package com.iress.code.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static com.iress.code.utils.ToyRobotConstants.*;
-
 @Getter
-@AllArgsConstructor
 public enum Direction {
-    NORTH(NORTH_NAME) {
+    NORTH {
         Direction left() {
             return WEST;
         }
@@ -17,7 +13,7 @@ public enum Direction {
             return EAST;
         }
     },
-    EAST(EAST_NAME) {
+    EAST {
         Direction left() {
             return NORTH;
         }
@@ -26,7 +22,7 @@ public enum Direction {
             return SOUTH;
         }
     },
-    SOUTH(SOUTH_NAME) {
+    SOUTH {
         Direction left() {
             return EAST;
         }
@@ -35,7 +31,7 @@ public enum Direction {
             return WEST;
         }
     },
-    WEST(WEST_NAME) {
+    WEST {
         Direction left() {
             return SOUTH;
         }
@@ -44,8 +40,6 @@ public enum Direction {
             return NORTH;
         }
     };
-
-    private final String directionName;
 
     abstract Direction left();
 

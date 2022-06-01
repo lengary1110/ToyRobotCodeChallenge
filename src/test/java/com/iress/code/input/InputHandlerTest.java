@@ -13,7 +13,7 @@ public class InputHandlerTest {
         InputData inputData = new FileInputData(new File("./src/test/resources/test_input_a.txt"));
         InputHandler inputHandler = new InputHandler();
         Robot robot = inputHandler.playToyRobot(inputData);
-        Assertions.assertEquals("0,1,NORTH", robot.checkStatus());
+        Assertions.assertEquals("0,2,WEST", robot.checkStatus());
     }
     @Test
     public void play_with_test_input_b() throws IOException {
@@ -28,7 +28,7 @@ public class InputHandlerTest {
         InputData inputData = new FileInputData(new File("./src/test/resources/test_input_c.txt"));
         InputHandler inputHandler = new InputHandler();
         Robot robot = inputHandler.playToyRobot(inputData);
-        Assertions.assertEquals("3,3,NORTH", robot.checkStatus());
+        Assertions.assertEquals("4,2,EAST", robot.checkStatus());
     }
 
     @Test
