@@ -1,4 +1,4 @@
-package com.iress.code.algorithm;
+package com.iress.code.service;
 
 import com.iress.code.model.Direction;
 import com.iress.code.model.OperationalCmd;

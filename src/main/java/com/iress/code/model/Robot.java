@@ -1,22 +1,33 @@
 package com.iress.code.model;
 
-import lombok.AllArgsConstructor;
+import com.iress.code.exception.ToyRobotException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
 @Getter
-@AllArgsConstructor
 @Slf4j
 public class Robot {
-    // maxX, maxY
-    public static final int minX = 0;
-    public static final int minY = 0;
-    public static final int maxX = 5;
-    public static final int maxY = 5;
+    @Value("${minX}")
+    private int minX;
+    @Value("${minY}")
+    private int minY;
+    @Value("${maxX}")
+    public int maxX;
+    @Value("${maxY}")
+    public int maxY;
     private int x;
     private int y;
     private Direction direction;
+
+    public Robot(int x, int y, Direction direction) {
+        if (checkPositionHazard(x, y)) {
+            throw new ToyRobotException("This Robot is not on the table");
+        }
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+    }
 
     public void move() {
         switch (direction) {
@@ -60,19 +71,14 @@ public class Robot {
     }
 
     public void leftRotate() {
-        if (!checkPositionHazard(x, y)) {
-            direction = direction.turn(Turn.LEFT);
-        }
+        direction = direction.turn(Turn.LEFT);
     }
 
     public void rightRotate() {
-        if (!checkPositionHazard(x, y)) {
-            direction = direction.turn(Turn.RIGHT);
-        }
+        direction = direction.turn(Turn.RIGHT);
     }
 
     public String checkStatus() {
         return x + "," + y + "," + direction;
     }
-
 }
