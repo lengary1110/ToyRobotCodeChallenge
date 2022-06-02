@@ -12,6 +12,11 @@ public class ToyRobotConstants {
     public static final String OPERATIONAL_REGEX_COMMAND = "^(MOVE|LEFT|RIGHT)$";
     public static final String REPORT_REGEX_COMMAND = "^REPORT$";
 
+    //operational command names
+    public static final String MOVE_OPERATION = "MOVE";
+    public static final String LEFT_OPERATION = "LEFT";
+    public static final String RIGHT_OPERATION = "RIGHT";
+
     //output description
     public static final String OUTPUT_DESCRIPTION = "Output: ";
 

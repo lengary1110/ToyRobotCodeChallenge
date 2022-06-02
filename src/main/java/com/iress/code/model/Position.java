@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import static com.iress.code.utils.ToyRobotConstants.*;
-import static com.iress.code.utils.ToyRobotConstants.COMMA_REGX;
 
 @Data
 @AllArgsConstructor

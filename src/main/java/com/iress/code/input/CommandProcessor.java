@@ -1,7 +1,6 @@
 package com.iress.code.input;
 
 import com.iress.code.model.Direction;
-import com.iress.code.model.OperationalCmd;
 import com.iress.code.model.Robot;
 import com.iress.code.service.RobotOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,7 @@ public class CommandProcessor {
         if (isValidLine(cmd, REPORT_REGEX_COMMAND)) {
             robotOperation.outputRobot(robot);
         } else if (isValidLine(cmd, OPERATIONAL_REGEX_COMMAND)) {
-            robotOperation.operateRobot(robot, OperationalCmd.valueOf(cmd));
+            robotOperation.operateRobot(robot, cmd);
         } else {
             errorHandler(AFTER_PLACE_SKIP_MSG, cmd);
         }
