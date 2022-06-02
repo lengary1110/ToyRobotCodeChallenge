@@ -25,7 +25,7 @@ public class Robot {
 
     public Robot(int x, int y, Direction direction) {
         if (checkPositionHazard(x, y)) {
-            throw new ToyRobotException("This Robot is not on the table");
+            throw new ToyRobotException("This Robot cannot be placed on the table");
         }
         this.direction = direction;
         this.x = x;
@@ -50,6 +50,6 @@ public class Robot {
     }
 
     public String checkStatus() {
-        return x + "," + y + "," + direction;
+        return x + COMMA_REGX + y + COMMA_REGX + direction;
     }
 }
