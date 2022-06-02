@@ -18,43 +18,29 @@ public class Robot {
             Direction.SOUTH, new int[]{0, -1},
             Direction.WEST, new int[]{-1, 0}
     );
-    private int x;
-    private int y;
-    private Direction direction;
-
-
-    public Robot(int x, int y, Direction direction) {
-        if (checkPositionHazard(x, y)) {
+    private Position position;
+    public Robot(Position position) {
+        if (position.checkPositionHazard()) {
             throw new ToyRobotException("This Robot cannot be placed on the table");
         }
-        this.direction = direction;
-        this.x = x;
-        this.y = y;
+        this.position = position;
     }
 
     public void move() {
-        if (checkPositionHazard(x + directionMap.get(direction)[0],
-                y + directionMap.get(direction)[1])) {
-            log.warn("Prohibition: hazardous move to {}, {}", x, y);
+        Position newPosition = new Position(position.getX() + directionMap.get(position.getDirection())[0],
+                position.getY() + directionMap.get(position.getDirection())[1], position.getDirection());
+        if (newPosition.checkPositionHazard()) {
+            log.warn("Prohibition: hazardous move to {}, {}", position.getX(), position.getY());
         } else {
-            x = x + directionMap.get(direction)[0];
-            y = y + directionMap.get(direction)[1];
+            position = newPosition;
         }
     }
 
     public void leftRotate() {
-        direction = direction.turn(Turn.LEFT);
+        position.setDirection(position.getDirection().turn(Turn.LEFT));
     }
 
     public void rightRotate() {
-        direction = direction.turn(Turn.RIGHT);
-    }
-
-    private boolean checkPositionHazard(int x, int y) {
-        return x < minX || (x > maxX || y < minY || y > maxY);
-    }
-
-    public String checkStatus() {
-        return x + COMMA_REGX + y + COMMA_REGX + direction;
+        position.setDirection(position.getDirection().turn(Turn.RIGHT));
     }
 }

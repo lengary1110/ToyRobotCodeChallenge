@@ -11,11 +11,7 @@ public class OutputHandler {
     public void handle(Robot robot) {
         StringBuilder outputStr = new StringBuilder();
         outputStr.append(OUTPUT_DESCRIPTION)
-                .append(robot.getX())
-                .append(COMMA_REGX)
-                .append(robot.getY())
-                .append(COMMA_REGX)
-                .append(robot.getDirection().toString());
+                .append(robot.getPosition().checkStatus());
         System.out.println(outputStr);
     }
 }
