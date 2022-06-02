@@ -6,8 +6,6 @@ import com.iress.code.model.Robot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.iress.code.utils.ToyRobotConstants.*;
-
 public class RobotOperationTest {
 
     @Test
@@ -28,7 +26,7 @@ public class RobotOperationTest {
 
     @Test
     public void moveCmd_returnValidPosition() {
-        Robot robot = new Robot(0 ,0, Direction.NORTH);
+        Robot robot = new Robot(0, 0, Direction.NORTH);
         RobotOperation robotOperation = new RobotOperation();
         robotOperation.operateRobot(robot, OperationalCmd.MOVE);
         Assertions.assertEquals(1, robot.getY());

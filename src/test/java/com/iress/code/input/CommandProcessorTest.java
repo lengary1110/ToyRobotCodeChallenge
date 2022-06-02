@@ -16,6 +16,7 @@ public class CommandProcessorTest {
         Robot robot = commandProcessor.playToyRobot(file);
         Assertions.assertEquals("4,4,SOUTH", robot.checkStatus());
     }
+
     @Test
     public void play_with_test_input_b() throws IOException {
         File file = new File("./src/test/resources/test_input_b.txt");
