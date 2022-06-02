@@ -14,7 +14,7 @@ public class CommandProcessorTest {
         File file = new File("./src/test/resources/test_input_a.txt");
         CommandProcessor commandProcessor = new CommandProcessor();
         Robot robot = commandProcessor.playToyRobot(file);
-        Assertions.assertEquals("0,2,WEST", robot.checkStatus());
+        Assertions.assertEquals("4,4,SOUTH", robot.checkStatus());
     }
     @Test
     public void play_with_test_input_b() throws IOException {

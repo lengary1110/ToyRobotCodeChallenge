@@ -33,8 +33,13 @@ public class Robot {
     }
 
     public void move() {
-        x = x + directionMap.get(direction)[0];
-        y = y + directionMap.get(direction)[1];
+        if (checkPositionHazard(x + directionMap.get(direction)[0],
+                y + directionMap.get(direction)[1])) {
+            log.warn("Prohibition: hazardous move to {}, {}", x, y);
+        } else {
+            x = x + directionMap.get(direction)[0];
+            y = y + directionMap.get(direction)[1];
+        }
     }
 
     public void leftRotate() {
