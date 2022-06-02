@@ -18,4 +18,10 @@ public class ToyRobotConstants {
     //errorMessage
     public static final String NO_PLACE_SKIP_MSG = "Skip commandline: {} because the game not started until a PLACE found";
     public static final String AFTER_PLACE_SKIP_MSG = "Skip commandline: {} it is not an valid operational or report commandline";
+
+    // units size
+    public static final int minX = 0;
+    public static final int minY = 0;
+    public static final int maxX = 5;
+    public static final int maxY = 5;
 }

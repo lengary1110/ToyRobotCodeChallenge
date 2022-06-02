@@ -6,6 +6,8 @@ import com.iress.code.model.Robot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static com.iress.code.utils.ToyRobotConstants.*;
+
 public class RobotOperationTest {
 
     @Test

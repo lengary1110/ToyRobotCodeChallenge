@@ -33,7 +33,7 @@ public class CommandProcessorTest {
     }
 
     @Test
-    public void play_with_test_input_d() throws IOException {
+    public void play_with_test_input_d() {
         File file = new File("./src/test/resources/test_input_d.txt");
         CommandProcessor commandProcessor = new CommandProcessor();
         Assertions.assertThrows(ToyRobotException.class,

@@ -3,71 +3,38 @@ package com.iress.code.model;
 import com.iress.code.exception.ToyRobotException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Map;
+
+import static com.iress.code.utils.ToyRobotConstants.*;
 
 @Getter
 @Slf4j
 public class Robot {
-    @Value("${minX}")
-    private int minX;
-    @Value("${minY}")
-    private int minY;
-    @Value("${maxX}")
-    public int maxX;
-    @Value("${maxY}")
-    public int maxY;
+
+    private final Map<Direction, int[]> directionMap = Map.of(
+            Direction.NORTH, new int[]{0, 1},
+            Direction.EAST, new int[]{1, 0},
+            Direction.SOUTH, new int[]{0, -1},
+            Direction.WEST, new int[]{-1, 0}
+    );
     private int x;
     private int y;
     private Direction direction;
+
 
     public Robot(int x, int y, Direction direction) {
         if (checkPositionHazard(x, y)) {
             throw new ToyRobotException("This Robot is not on the table");
         }
+        this.direction = direction;
         this.x = x;
         this.y = y;
-        this.direction = direction;
     }
 
     public void move() {
-        switch (direction) {
-            case NORTH:
-                y++;
-                if (checkPositionHazard(x, y)) {
-                    y--;
-                    warn(x, y);
-                }
-                break;
-            case SOUTH:
-                y--;
-                if (checkPositionHazard(x, y)) {
-                    y++;
-                    warn(x, y);
-                }
-                break;
-            case EAST:
-                x++;
-                if (checkPositionHazard(x, y)) {
-                    x--;
-                    warn(x, y);
-                }
-                break;
-            case WEST:
-                x--;
-                if (checkPositionHazard(x, y)) {
-                    x++;
-                    warn(x, y);
-                }
-                break;
-        }
-    }
-
-    private void warn(int x, int y) {
-        log.warn("Hazard: return to " + x + ", " + y);
-    }
-
-    private boolean checkPositionHazard(int x, int y) {
-        return x < minX || (x > maxX || y < minY || y > maxY);
+        x = x + directionMap.get(direction)[0];
+        y = y + directionMap.get(direction)[1];
     }
 
     public void leftRotate() {
@@ -76,6 +43,10 @@ public class Robot {
 
     public void rightRotate() {
         direction = direction.turn(Turn.RIGHT);
+    }
+
+    private boolean checkPositionHazard(int x, int y) {
+        return x < minX || (x > maxX || y < minY || y > maxY);
     }
 
     public String checkStatus() {
