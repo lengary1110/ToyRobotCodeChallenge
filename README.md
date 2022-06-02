@@ -1,10 +1,10 @@
 # Toy Robot Code Challenge
 
 ## Assumption
-1. This Toy Robot game only support one robot, the later place robot will replace the former one;
-2. All the commands are case-sensitive.
+1. This Toy Robot game only support one robot, the later place robot will replace the former one
+2. All the commands are case-sensitive
 
-## Environments
+## Environment
 JDK 11
 
 ## How to run this application
