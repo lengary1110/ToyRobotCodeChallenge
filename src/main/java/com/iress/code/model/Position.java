@@ -1,24 +1,22 @@
 package com.iress.code.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
 import static com.iress.code.utils.ToyRobotConstants.*;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class Position {
-    private int x;
+    private final int x;
 
-    private int y;
-
-    private Direction direction;
+    private final int y;
 
     public boolean checkPositionHazard() {
         return x < minX || (x > maxX || y < minY || y > maxY);
     }
 
-    public String checkStatus() {
-        return x + COMMA_REGX + y + COMMA_REGX + direction;
+    public Position move(Position offset) {
+        return new Position(x + offset.getX(), y + offset.getY());
     }
 }

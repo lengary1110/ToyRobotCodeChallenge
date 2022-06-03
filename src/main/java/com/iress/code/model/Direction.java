@@ -4,48 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum Direction {
-    NORTH {
-        Direction left() {
-            return WEST;
-        }
-
-        Direction right() {
-            return EAST;
-        }
-    },
-    EAST {
-        Direction left() {
-            return NORTH;
-        }
-
-        Direction right() {
-            return SOUTH;
-        }
-    },
-    SOUTH {
-        Direction left() {
-            return EAST;
-        }
-
-        Direction right() {
-            return WEST;
-        }
-    },
-    WEST {
-        Direction left() {
-            return SOUTH;
-        }
-
-        Direction right() {
-            return NORTH;
-        }
-    };
-
-    abstract Direction left();
-
-    abstract Direction right();
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST;
 
     public Direction turn(Turn where) {
-        return where == Turn.LEFT ? this.left() : this.right();
+        return values()[(where == Turn.LEFT ?
+                this.ordinal() + values().length - 1 :
+                this.ordinal() + 1) % values().length];
     }
 }

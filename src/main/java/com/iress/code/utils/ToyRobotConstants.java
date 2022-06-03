@@ -3,19 +3,13 @@ package com.iress.code.utils;
 public class ToyRobotConstants {
 
     //file names
-    public static final String INPUT_FILE_NAME = "input.txt";
+    public static final String INPUT_FILE_NAME = "src/input.txt";
 
     //regex names
     public static final String SPACE_REGX = "\\s+";
     public static final String COMMA_REGX = ",";
     public static final String PLACE_REGEX_COMMAND = "^PLACE \\d{1,},\\d{1,},(NORTH|SOUTH|EAST|WEST$)";
-    public static final String OPERATIONAL_REGEX_COMMAND = "^(MOVE|LEFT|RIGHT)$";
-    public static final String REPORT_REGEX_COMMAND = "^REPORT$";
-
-    //operational command names
-    public static final String MOVE_OPERATION = "MOVE";
-    public static final String LEFT_OPERATION = "LEFT";
-    public static final String RIGHT_OPERATION = "RIGHT";
+    public static final String OPERATION_REGEX_COMMAND = "^(MOVE|LEFT|RIGHT|REPORT)$";
 
     //output description
     public static final String OUTPUT_DESCRIPTION = "Output: ";
