@@ -37,11 +37,11 @@ public class CommandProcessor {
     }
 
     private boolean checkIfRobotFinallyInitialized(Robot robot, String cmd) {
-        return robot != null && isInValidLine(cmd, PLACE_REGEX_COMMAND);
+        return robot != null && isInvalidCmd(cmd, PLACE_REGEX_COMMAND);
     }
 
     private void play(Robot robot, String cmd) {
-        if (isInValidLine(cmd, OPERATION_REGEX_COMMAND)) {
+        if (isInvalidCmd(cmd, OPERATION_REGEX_COMMAND)) {
             errorHandler(AFTER_PLACE_SKIP_MSG, cmd);
             return;
         }
@@ -49,7 +49,7 @@ public class CommandProcessor {
     }
 
     private Robot initial(String cmd) {
-        if (isInValidLine(cmd, PLACE_REGEX_COMMAND)) {
+        if (isInvalidCmd(cmd, PLACE_REGEX_COMMAND)) {
             errorHandler(NO_PLACE_SKIP_MSG, cmd);
             return null;
         }
@@ -59,7 +59,7 @@ public class CommandProcessor {
         return new Robot(new Position(x, y), Direction.valueOf(placeInfo[2]));
     }
 
-    private boolean isInValidLine(String cmd, String REGEX_COMMAND) {
+    private boolean isInvalidCmd(String cmd, String REGEX_COMMAND) {
         return !Pattern.compile(REGEX_COMMAND).matcher(cmd).find();
     }
 

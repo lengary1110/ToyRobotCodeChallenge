@@ -32,7 +32,7 @@ public class Robot {
     public void move() {
         Position newPosition = position.move(directionOffsetMap.get(direction));
         if (newPosition.checkPositionHazard()) {
-            log.warn("Prohibition: hazardous move to {}, {}", position.getX(), position.getY());
+            log.warn("Prohibition: hazardous move to {},{}", newPosition.getX(), newPosition.getY());
             return;
         }
         position = newPosition;
